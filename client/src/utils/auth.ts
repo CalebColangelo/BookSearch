@@ -1,55 +1,66 @@
-// use this to decode a token and get the user's information out of it
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 
 interface UserToken {
-  name: string;
+  name?: string;
   exp: number;
 }
 
-// create a new class to instantiate for a user
 class AuthService {
-  // get user data
+  /**
+   * Get user profile from token
+   * @returns Decoded user profile object
+   */
   getProfile() {
-    return jwtDecode(this.getToken() || '');
-  }
-
-  // check if user's logged in
-  loggedIn() {
-    // Checks if there is a saved token and it's still valid
     const token = this.getToken();
-    return !!token && !this.isTokenExpired(token); // handwaiving here
+    return token ? jwtDecode<UserToken>(token) : null;
   }
 
-  // check if token is expired
-  isTokenExpired(token: string) {
+  /**
+   * Check if user is logged in
+   * @returns true if logged in, false otherwise
+   */
+  loggedIn(): boolean {
+    const token = this.getToken();
+    return !!token && !this.isTokenExpired(token);
+  }
+
+  /**
+   * Check if the token is expired
+   * @param token - JWT token string
+   * @returns true if expired, false otherwise
+   */
+  isTokenExpired(token: string): boolean {
     try {
       const decoded = jwtDecode<UserToken>(token);
-      if (decoded.exp < Date.now() / 1000) {
-        return true;
-      } 
-      
-      return false;
+      return decoded.exp < Date.now() / 1000;
     } catch (err) {
-      return false;
+      return true; // Consider expired if decoding fails
     }
   }
 
-  getToken() {
-    // Retrieves the user token from localStorage
-    return localStorage.getItem('id_token');
+  /**
+   * Get token from localStorage
+   * @returns JWT token string or null if not found
+   */
+  getToken(): string | null {
+    return localStorage.getItem("id_token");
   }
 
-  login(idToken: string) {
-    // Saves user token to localStorage
-    localStorage.setItem('id_token', idToken);
-    window.location.assign('/');
+  /**
+   * Save user token & reload page
+   * @param idToken - JWT token string
+   */
+  login(idToken: string): void {
+    localStorage.setItem("id_token", idToken);
+    window.location.assign("/"); // Reload page
   }
 
-  logout() {
-    // Clear user token and profile data from localStorage
-    localStorage.removeItem('id_token');
-    // this will reload the page and reset the state of the application
-    window.location.assign('/');
+  /**
+   * Remove token & reload page
+   */
+  logout(): void {
+    localStorage.removeItem("id_token");
+    window.location.assign("/"); // Reload page
   }
 }
 
