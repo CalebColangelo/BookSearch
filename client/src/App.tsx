@@ -7,7 +7,6 @@ import Navbar from "./components/Navbar.js";
 
 import "./App.css";
 
-// Error handling link
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) =>
@@ -19,7 +18,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 });
 
-// HTTP link
 const httpLink = new HttpLink({
   uri: "http://localhost:3001/graphql",
   headers: {
@@ -27,7 +25,6 @@ const httpLink = new HttpLink({
   },
 });
 
-// Create an Apollo Client instance
 const client = new ApolloClient({
   link: from([errorLink, httpLink]),
   cache: new InMemoryCache(),

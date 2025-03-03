@@ -20,12 +20,10 @@ const SignupForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
-    // Create mock token and auto-register
     const mockToken = 'mock-jwt-token';
     Auth.login(mockToken);
     handleModalClose();
 
-    // Clear form
     setUserFormData({
       username: '',
       email: '',

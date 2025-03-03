@@ -6,7 +6,6 @@ import LoginForm from "./LoginForm.js";
 import Auth from "../utils/auth.js";
 
 const AppNavbar = () => {
-  // State for modal visibility
   const [showModal, setShowModal] = useState(false);
 
   return (

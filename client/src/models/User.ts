@@ -7,7 +7,6 @@ export interface User {
   savedBooks: Book[];
 }
 
-// Add a mock user for testing
 export const createMockUser = (userData?: Partial<User>): User => {
   return {
     username: userData?.username || 'mockUser',
