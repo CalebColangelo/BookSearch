@@ -21,18 +21,14 @@ const LoginForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Always accept login without validation
     try {
-      // Create a mock token
       const mockToken = 'mock-jwt-token';
       
-      // Skip the actual login mutation and use mock data
       Auth.login(mockToken);
       
       handleModalClose();
     } catch (err) {
       console.error(err);
-      // Even if there's an error, we'll proceed with login
       Auth.login('mock-jwt-token');
       handleModalClose();
     }
